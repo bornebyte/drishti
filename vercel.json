@@ -1,7 +1,36 @@
 {
-    "$schema": "https://openapi.vercel.sh/vercel.json",
-    "framework": "nextjs",
-    "installCommand": "cd frontend && pnpm install --frozen-lockfile",
-    "buildCommand": "cd frontend && pnpm build",
-    "devCommand": "cd frontend && pnpm dev"
+    "version": 2,
+    "builds": [
+        {
+            "src": "backend/run.py",
+            "use": "@vercel/python",
+            "config": {
+                "maxLambdaSize": "70mb"
+            }
+        },
+        {
+            "src": "frontend/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "/dist"
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/backend/app.py"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/frontend/$1"
+        },
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/frontend/index.html"
+        }
+    ]
 }
