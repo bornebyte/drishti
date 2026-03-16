@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { QrCode } from "lucide-react";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -56,7 +57,7 @@ export function CameraRegistrationCard({ zones }: { zones: Zone[] }) {
       </Button>
       {registration ? (
         <div className="rounded-[1.4rem] border border-[var(--border)] bg-white/80 p-4 text-center">
-          <img src={registration.qr_code} alt="Camera registration QR" className="mx-auto h-48 w-48 rounded-2xl border border-[var(--border)] bg-white p-3" />
+          <Image src={registration.qr_code} alt="Camera registration QR" className="mx-auto h-48 w-48 rounded-2xl border border-[var(--border)] bg-white p-3" width={192} height={192} />
           <p className="mt-3 break-all text-xs text-slate">{registration.connect_url}</p>
         </div>
       ) : null}

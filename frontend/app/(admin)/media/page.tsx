@@ -4,6 +4,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { Card } from "@/components/ui/card";
 import { getMedia } from "@/lib/api";
 import { formatBytes } from "@/lib/utils";
+import Image from "next/image";
 
 export default async function MediaPage() {
   const mediaResponse = await getMedia();
@@ -32,7 +33,7 @@ export default async function MediaPage() {
               <StatusBadge value={item.media_type} />
             </div>
             {item.media_type === "image" && item.url ? (
-              <img src={item.url} alt={item.filename} className="h-52 w-full rounded-[1.4rem] object-cover" />
+              <Image src={item.url} alt={item.filename} className="h-52 w-full rounded-[1.4rem] object-cover" width={208} height={208} />
             ) : (
               <div className="rounded-[1.4rem] border border-dashed border-[var(--border)] bg-white/65 p-6 text-sm text-slate">
                 Preview available through presigned URL after upload completion.
