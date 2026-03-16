@@ -5,7 +5,7 @@ import { QrCode } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { Select } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { clientMutation } from "@/lib/api";
 import type { Zone } from "@/types";
 
@@ -38,12 +38,17 @@ export function CameraRegistrationCard({ zones }: { zones: Zone[] }) {
         <CardTitle>Generate mobile camera token</CardTitle>
         <CardDescription>Workers scan this QR to turn a low-cost Android phone into a zone camera.</CardDescription>
       </div>
-      <Select value={zoneId} onChange={(event) => setZoneId(event.target.value)}>
-        {zones.map((zone) => (
-          <option key={zone.id} value={zone.id}>
-            {zone.name}
-          </option>
-        ))}
+      <Select value={zoneId} onValueChange={setZoneId}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select zone" />
+        </SelectTrigger>
+        <SelectContent>
+          {zones.map((zone) => (
+            <SelectItem key={zone.id} value={zone.id}>
+              {zone.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
       <Button onClick={handleGenerate} className="w-full">
         <QrCode className="mr-2 h-4 w-4" />

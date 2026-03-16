@@ -3,13 +3,13 @@
 import { Mic, Square } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { clientMutation } from "@/lib/api";
 import { languageOptions } from "@/lib/constants";
 import type { Zone } from "@/types";
@@ -33,6 +33,7 @@ export function WorkerReportForm({ zones }: { zones: Zone[] }) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
     setValue
   } = useForm<WorkerReportValues>({
@@ -125,24 +126,46 @@ export function WorkerReportForm({ zones }: { zones: Zone[] }) {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <label className="text-sm font-medium text-ink">Zone</label>
-              <Select {...register("zone_id")}>
-                {zones.map((zone) => (
-                  <option key={zone.id} value={zone.id}>
-                    {zone.name}
-                  </option>
-                ))}
-              </Select>
+              <Controller
+                control={control}
+                name="zone_id"
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select zone" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {zones.map((zone) => (
+                        <SelectItem key={zone.id} value={zone.id}>
+                          {zone.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               {errors.zone_id ? <p className="text-sm text-red-600">{errors.zone_id.message}</p> : null}
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-ink">Language</label>
-              <Select {...register("language")}>
-                {languageOptions.map((language) => (
-                  <option key={language.value} value={language.value}>
-                    {language.label}
-                  </option>
-                ))}
-              </Select>
+              <Controller
+                control={control}
+                name="language"
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {languageOptions.map((language) => (
+                        <SelectItem key={language.value} value={language.value}>
+                          {language.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               {errors.language ? <p className="text-sm text-red-600">{errors.language.message}</p> : null}
             </div>
           </div>
